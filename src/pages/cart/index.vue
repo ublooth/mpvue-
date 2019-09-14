@@ -171,7 +171,7 @@
           });
           return false;
         }
-        // 去掉数组中空的false的
+        // // 去掉数组中空的false的
         var newgoodsid = [];
         for (let i = 0; i < this.Listids.length; i++) {
           const element = this.Listids[i];
@@ -185,11 +185,48 @@
           openId: this.openId,
           allPrise: this.allPrise
         });
-        if (data) {
-          wx.navigateTo({
-            url: "/pages/order/main"
-          });
-        }
+        var that = this;
+        wx.showModal({
+          title: '提示',
+          content: '是否确定下单',
+          success (res) {
+            if (res.cancel) {
+              console.log('用户点击取消');
+              return false;
+            } else if (res.confirm) {
+              console.log('用户点击确定');
+              if (data) {
+                wx.navigateTo({
+                  url: "/pages/order/main"
+                });
+                // that.Listids.length = 0
+              }
+            }
+          }
+        })
+
+
+
+        // // 去掉数组中空的false的
+        // var newgoodsid = [];
+        // for (let i = 0; i < this.Listids.length; i++) {
+        //   const element = this.Listids[i];
+        //   if (element) {
+        //     newgoodsid.push(element);
+        //   }
+        // }
+        // var goodsId = newgoodsid.join(",");
+        // const data = await post("/order/submitAction", {
+        //   goodsId: goodsId,
+        //   openId: this.openId,
+        //   allPrise: this.allPrise
+        // });
+        // if (data) {
+        //   wx.navigateTo({
+        //     url: "/pages/order/main"
+        //   });
+        //   // // this.Listids.length = 0
+        // }
       },
       async delGoods(id, index) {
         var _this = this;
